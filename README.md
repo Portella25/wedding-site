@@ -6,7 +6,7 @@ Este é o projeto do site de casamento, desenvolvido com **Next.js 14**, **Tailw
 
 ### 1. Configuração do Ambiente
 
-1. Copie o arquivo `.env.local` e preencha com suas credenciais:
+1. Copiar o arquivo `.env.local` e preencher com as credenciais:
    ```bash
    cp .env.local .env
    ```
@@ -20,9 +20,9 @@ Este é o projeto do site de casamento, desenvolvido com **Next.js 14**, **Tailw
 
 ### 2. Banco de Dados (Supabase)
 
-1. No painel do Supabase, vá em **SQL Editor**.
-2. Execute o conteúdo de `supabase/schema.sql` para criar as tabelas.
-3. Execute o conteúdo de `supabase/seed.sql` para popular com dados iniciais (presentes e convidados de teste).
+1. No painel do Supabase, ir em **SQL Editor**.
+2. Executar o conteúdo de `supabase/schema.sql` para criar as tabelas.
+3. Executar o conteúdo de `supabase/seed.sql` para popular com dados iniciais (presentes e convidados de teste).
 
 ### 3. Rodando o Projeto
 
@@ -41,13 +41,13 @@ npm run dev
 ## 🔐 Acessos
 
 ### Convidado
-Use um dos tokens gerados no seed para entrar na home:
+Usar um dos tokens gerados no seed para entrar na home:
 - Token: `VIP2026`
 - Token: `SILVA26`
 
 ### Painel Administrativo
 Acesse `/admin/login`
-- Senha: A que você definiu em `ADMIN_PASSWORD` (padrão: `admin123`)
+- Senha: A que foi definida em `ADMIN_PASSWORD`
 
 ## 🛠 Funcionalidades
 
@@ -62,9 +62,9 @@ Acesse `/admin/login`
 ## 📦 Deploy
 
 Este projeto está pronto para deploy na **Vercel**.
-1. Importe o repositório na Vercel.
+1. Importar o repositório na Vercel.
 2. Configure as Variáveis de Ambiente (Environment Variables) com os mesmos valores do `.env`.
 3. Deploy!
 
 ---
-Feito com ❤️ para o casamento do ano!
+Feito para o casamento do ano!
