@@ -94,6 +94,8 @@ export default function HomePage() {
           
           <p className="mt-8 text-[10px] text-[#9C8B7A]/50 uppercase tracking-widest">
             Feito com amor ❤️
+            <span className="mx-2">|</span>
+            <a href="/admin" className="hover:text-[#C9A34A] transition-colors">Admin</a>
           </p>
         </footer>
       </div>

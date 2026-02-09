@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Copy, Check, QrCode } from "lucide-react";
+import { X, Copy, Check, QrCode, DollarSign } from "lucide-react";
 import QRCode from "qrcode";
 import { generatePixPayload } from "@/lib/pix";
 import { Presente } from "@/types";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
+import { cn } from "@/lib/utils";
 
 interface PixModalProps {
   isOpen: boolean;
@@ -23,9 +24,37 @@ export default function PixModal({ isOpen, onClose, presente, valor, guestId }: 
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
+  
+  // Payment Mode States
+  const [paymentMode, setPaymentMode] = useState<'full' | 'partial'>('full');
+  const [partialAmount, setPartialAmount] = useState<string>("");
+
+  // Determine effective value based on mode
+  const rawPartialValue = parseFloat(partialAmount.replace(',', '.')) || 0;
+  const effectiveValue = paymentMode === 'full' 
+    ? valor 
+    : rawPartialValue;
+
+  // Calculate remaining amount
+  // Assuming presente.valor_arrecadado is available and up to date
+  const remainingAmount = Math.max(0, valor - (presente.valor_arrecadado || 0));
+
+  // Reset state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setPaymentMode('full');
+      setPartialAmount("");
+      setMensagem("");
+    }
+  }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen && presente) {
+    // Only generate payload if value is valid according to rules
+    const isValidPartial = paymentMode === 'partial' 
+      ? (rawPartialValue >= 20 && rawPartialValue <= remainingAmount)
+      : true;
+
+    if (isOpen && presente && effectiveValue > 0 && isValidPartial) {
       // Gerar Payload Pix
       // TODO: Substituir por chave real via ENV
       const payload = generatePixPayload({
@@ -33,8 +62,8 @@ export default function PixModal({ isOpen, onClose, presente, valor, guestId }: 
         name: "Leticia e Adriano",
         city: "Sao Paulo",
         txid: `GIFT${presente.id.substring(0, 4)}${Date.now().toString().substring(8)}`, // ID único curto
-        value: valor,
-        message: `Presente: ${presente.titulo}`,
+        value: effectiveValue,
+        message: `Presente: ${presente.titulo} (${paymentMode === 'partial' ? 'Parcial' : 'Total'})`,
       });
 
       setPixCode(payload);
@@ -42,10 +71,15 @@ export default function PixModal({ isOpen, onClose, presente, valor, guestId }: 
       QRCode.toDataURL(payload, { width: 300, margin: 2 })
         .then((url) => setQrCodeUrl(url))
         .catch((err) => console.error(err));
+    } else {
+       // Clear code if invalid
+       setPixCode("");
+       setQrCodeUrl("");
     }
-  }, [isOpen, presente, valor]);
+  }, [isOpen, presente, effectiveValue, paymentMode, rawPartialValue, remainingAmount]);
 
   const handleCopy = () => {
+    if (!pixCode) return;
     navigator.clipboard.writeText(pixCode);
     setCopied(true);
     toast.success("Código Pix copiado!");
@@ -53,6 +87,23 @@ export default function PixModal({ isOpen, onClose, presente, valor, guestId }: 
   };
 
   const handleConfirmPayment = async () => {
+    // Validation Logic
+    if (paymentMode === 'partial') {
+        if (rawPartialValue < 20) {
+            toast.error("O valor mínimo para pagamento parcial é de R$ 20,00.");
+            return;
+        }
+        if (rawPartialValue > remainingAmount) {
+            toast.error(`O valor máximo permitido é de R$ ${remainingAmount.toFixed(2).replace('.', ',')} (valor restante).`);
+            return;
+        }
+    }
+
+    if (effectiveValue <= 0) {
+      toast.error("O valor do pagamento deve ser maior que zero.");
+      return;
+    }
+
     setLoading(true);
     try {
       // Usar API Route para registrar pagamento e atualizar presente atomicamente
@@ -64,8 +115,9 @@ export default function PixModal({ isOpen, onClose, presente, valor, guestId }: 
         body: JSON.stringify({
           presente_id: presente.id,
           convidado_id: guestId,
-          valor: valor,
+          valor: effectiveValue,
           mensagem: mensagem,
+          tipo_pagamento: paymentMode, // Optional: send mode if backend needs it
         }),
       });
 
@@ -86,6 +138,9 @@ export default function PixModal({ isOpen, onClose, presente, valor, guestId }: 
       setLoading(false);
     }
   };
+
+  const isPartialInvalid = paymentMode === 'partial' && (rawPartialValue < 20 || rawPartialValue > remainingAmount);
+  const showQrCode = effectiveValue > 0 && qrCodeUrl && !isPartialInvalid;
 
   return (
     <AnimatePresence>
@@ -110,20 +165,89 @@ export default function PixModal({ isOpen, onClose, presente, valor, guestId }: 
             <div className="p-6 overflow-y-auto">
               <div className="text-center mb-6">
                 <p className="text-[var(--text-secondary)] mb-1">Você está presenteando com:</p>
-                <h4 className="font-serif text-2xl text-[var(--gold-dark)] font-bold">{presente.titulo}</h4>
-                <p className="text-xl font-bold mt-2 text-green-600">
-                  {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(valor)}
-                </p>
+                <h4 className="font-serif text-2xl text-[var(--gold-dark)] font-bold leading-tight">{presente.titulo}</h4>
+                
+                {/* Selector for gifts > 500 */}
+                {valor > 500 && (
+                  <div className="mt-4 flex bg-gray-100 p-1 rounded-lg">
+                    <button
+                      onClick={() => setPaymentMode('full')}
+                      className={cn(
+                        "flex-1 py-2 text-sm font-medium rounded-md transition-all",
+                        paymentMode === 'full' 
+                          ? "bg-white text-[var(--gold-dark)] shadow-sm" 
+                          : "text-gray-500 hover:text-gray-700"
+                      )}
+                    >
+                      Pagar Tudo
+                    </button>
+                    <button
+                      onClick={() => setPaymentMode('partial')}
+                      className={cn(
+                        "flex-1 py-2 text-sm font-medium rounded-md transition-all",
+                        paymentMode === 'partial' 
+                          ? "bg-white text-[var(--gold-dark)] shadow-sm" 
+                          : "text-gray-500 hover:text-gray-700"
+                      )}
+                    >
+                      Pagar Parcial
+                    </button>
+                  </div>
+                )}
+
+                {/* Display Value or Input */}
+                <div className="mt-3">
+                  {paymentMode === 'full' ? (
+                    <p className="text-xl font-bold text-green-600">
+                      {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(valor)}
+                    </p>
+                  ) : (
+                    <div className="relative max-w-[150px] mx-auto">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">R$</span>
+                      <input
+                        type="text" // using text to handle currency formatting better manually if needed, or simple number
+                        value={partialAmount}
+                        onChange={(e) => {
+                           // Allow only numbers and comma/dot
+                           const val = e.target.value.replace(/[^0-9,.]/g, '');
+                           setPartialAmount(val);
+                        }}
+                        placeholder="0,00"
+                        className={cn(
+                          "w-full pl-10 pr-4 py-2 border rounded-lg text-center text-lg font-bold text-green-600 focus:outline-none focus:ring-2",
+                          isPartialInvalid && partialAmount ? "border-red-300 focus:ring-red-200" : "border-[var(--gold-light)] focus:ring-[var(--gold)]"
+                        )}
+                        autoFocus
+                      />
+                    </div>
+                  )}
+                  {paymentMode === 'partial' && (
+                    <div className="mt-1 space-y-1">
+                        <p className="text-xs text-gray-400">
+                            Digite um valor entre <strong>R$ 20,00</strong> e <strong>{new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(remainingAmount)}</strong>
+                        </p>
+                        {remainingAmount < valor && (
+                            <p className="text-[10px] text-green-600 font-medium bg-green-50 py-1 px-2 rounded-full inline-block">
+                                Já arrecadado: {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(presente.valor_arrecadado || 0)}
+                            </p>
+                        )}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* QR Code */}
               <div className="flex justify-center mb-6">
-                {qrCodeUrl ? (
-                  <div className="p-2 border-2 border-[var(--gold-light)] rounded-xl">
+                {showQrCode ? (
+                  <div className="p-2 border-2 border-[var(--gold-light)] rounded-xl relative">
                     <img src={qrCodeUrl} alt="QR Code Pix" className="w-48 h-48 md:w-56 md:h-56" />
                   </div>
                 ) : (
-                  <div className="w-48 h-48 bg-gray-100 animate-pulse rounded-xl"></div>
+                  <div className="w-48 h-48 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm text-center p-4">
+                    {paymentMode === 'partial' && isPartialInvalid && partialAmount 
+                        ? "Valor fora dos limites permitidos" 
+                        : (effectiveValue <= 0 ? "Defina um valor" : "Carregando...")}
+                  </div>
                 )}
               </div>
 
@@ -135,13 +259,15 @@ export default function PixModal({ isOpen, onClose, presente, valor, guestId }: 
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    value={pixCode}
+                    value={showQrCode ? pixCode : ""}
                     readOnly
+                    placeholder={!showQrCode ? "Aguardando valor válido..." : ""}
                     className="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-500 font-mono truncate"
                   />
                   <button
                     onClick={handleCopy}
-                    className="bg-[var(--gold-light)] hover:bg-[var(--gold)] text-[var(--gold-dark)] hover:text-white p-2 rounded-lg transition-colors"
+                    disabled={!showQrCode}
+                    className="bg-[var(--gold-light)] hover:bg-[var(--gold)] text-[var(--gold-dark)] hover:text-white p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {copied ? <Check size={20} /> : <Copy size={20} />}
                   </button>
@@ -163,8 +289,8 @@ export default function PixModal({ isOpen, onClose, presente, valor, guestId }: 
 
               <button
                 onClick={handleConfirmPayment}
-                disabled={loading}
-                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-md disabled:opacity-70"
+                disabled={loading || !showQrCode}
+                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {loading ? "Registrando..." : "Já realizei o pagamento"}
               </button>

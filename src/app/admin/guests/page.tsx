@@ -19,6 +19,7 @@ export default function AdminGuestsPage() {
     telefone: "",
     acompanhantes_max: 0,
     mensagem_personalizada: "",
+    classificacao: "Convidado", // Default value
   });
 
   const fetchGuests = async () => {
@@ -51,7 +52,13 @@ export default function AdminGuestsPage() {
       }
       setIsModalOpen(false);
       setEditingGuest(null);
-      setFormData({ nome: "", telefone: "", acompanhantes_max: 0, mensagem_personalizada: "" });
+      setFormData({ 
+        nome: "", 
+        telefone: "", 
+        acompanhantes_max: 0, 
+        mensagem_personalizada: "",
+        classificacao: "Convidado"
+      });
       fetchGuests();
     } catch (err: any) {
       toast.error("Erro ao salvar: " + err.message);
@@ -81,7 +88,6 @@ export default function AdminGuestsPage() {
         let successCount = 0;
         let errorCount = 0;
 
-        // Processar em chunks ou um a um? Vamos um a um para feedback, mas paralelo seria melhor.
         const promises = rows.map(async (row: any) => {
             if (!row.nome) return;
             const token = (row.nome.split(" ")[0] + Math.random().toString(36).substring(2, 6)).toUpperCase();
@@ -91,6 +97,7 @@ export default function AdminGuestsPage() {
                     telefone: row.telefone || "",
                     acompanhantes_max: parseInt(row.acompanhantes_max) || 0,
                     mensagem_personalizada: row.mensagem_personalizada || "",
+                    classificacao: row.classificacao || "Convidado",
                     token
                 });
                 successCount++;
@@ -111,8 +118,19 @@ export default function AdminGuestsPage() {
 
   const filteredGuests = guests.filter(g => 
     g.nome.toLowerCase().includes(search.toLowerCase()) || 
-    g.token.toLowerCase().includes(search.toLowerCase())
+    g.token.toLowerCase().includes(search.toLowerCase()) ||
+    (g.classificacao && g.classificacao.toLowerCase().includes(search.toLowerCase()))
   );
+
+  const getClassificacaoColor = (tipo: string) => {
+    switch(tipo) {
+      case 'Familia': return 'bg-purple-100 text-purple-700 border-purple-200';
+      case 'Padrinhos': 
+      case 'Padrinho': 
+      case 'Madrinha': return 'bg-blue-100 text-blue-700 border-blue-200';
+      default: return 'bg-gray-100 text-gray-700 border-gray-200';
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -130,7 +148,7 @@ export default function AdminGuestsPage() {
           <button
             onClick={() => {
                 setEditingGuest(null);
-                setFormData({ nome: "", telefone: "", acompanhantes_max: 0, mensagem_personalizada: "" });
+                setFormData({ nome: "", telefone: "", acompanhantes_max: 0, mensagem_personalizada: "", classificacao: "Convidado" });
                 setIsModalOpen(true);
             }}
             className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors flex items-center gap-2 text-sm font-medium"
@@ -147,7 +165,7 @@ export default function AdminGuestsPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
-              placeholder="Buscar por nome ou token..."
+              placeholder="Buscar por nome, token ou grupo..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
@@ -160,6 +178,7 @@ export default function AdminGuestsPage() {
             <thead className="bg-gray-50 text-gray-600 font-medium border-b border-gray-200">
               <tr>
                 <th className="px-6 py-4">Nome</th>
+                <th className="px-6 py-4">Grupo</th>
                 <th className="px-6 py-4">Token</th>
                 <th className="px-6 py-4">Acompanhantes</th>
                 <th className="px-6 py-4">Status</th>
@@ -168,13 +187,18 @@ export default function AdminGuestsPage() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {loading ? (
-                 <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">Carregando...</td></tr>
+                 <tr><td colSpan={6} className="px-6 py-8 text-center text-gray-500">Carregando...</td></tr>
               ) : filteredGuests.length === 0 ? (
-                 <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">Nenhum convidado encontrado.</td></tr>
+                 <tr><td colSpan={6} className="px-6 py-8 text-center text-gray-500">Nenhum convidado encontrado.</td></tr>
               ) : (
                 filteredGuests.map((guest) => (
                   <tr key={guest.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 font-medium text-gray-900">{guest.nome}</td>
+                    <td className="px-6 py-4">
+                        <span className={`px-2 py-1 rounded text-xs font-medium border ${getClassificacaoColor(guest.classificacao)}`}>
+                            {guest.classificacao || "Convidado"}
+                        </span>
+                    </td>
                     <td className="px-6 py-4">
                         <span className="bg-gray-100 px-2 py-1 rounded text-xs font-mono border border-gray-200 flex w-fit items-center gap-2">
                             {guest.token}
@@ -201,7 +225,8 @@ export default function AdminGuestsPage() {
                                 nome: guest.nome,
                                 telefone: guest.telefone || "",
                                 acompanhantes_max: guest.acompanhantes_max,
-                                mensagem_personalizada: guest.mensagem_personalizada || ""
+                                mensagem_personalizada: guest.mensagem_personalizada || "",
+                                classificacao: guest.classificacao || "Convidado"
                             });
                             setIsModalOpen(true);
                         }}
@@ -243,15 +268,33 @@ export default function AdminGuestsPage() {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:outline-none"
                     />
                 </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
-                    <input
-                        type="text"
-                        value={formData.telefone}
-                        onChange={(e) => setFormData({...formData, telefone: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:outline-none"
-                    />
+                
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Classificação</label>
+                        <select
+                            value={formData.classificacao}
+                            onChange={(e) => setFormData({...formData, classificacao: e.target.value})}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:outline-none bg-white"
+                        >
+                            <option value="Convidado">Convidado</option>
+                            <option value="Familia">Família</option>
+                            <option value="Padrinhos">Padrinhos</option>
+                            <option value="Padrinho">Padrinho</option>
+                            <option value="Madrinha">Madrinha</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+                        <input
+                            type="text"
+                            value={formData.telefone}
+                            onChange={(e) => setFormData({...formData, telefone: e.target.value})}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:outline-none"
+                        />
+                    </div>
                 </div>
+
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Máx. Acompanhantes</label>
                     <input

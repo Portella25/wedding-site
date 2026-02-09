@@ -37,7 +37,7 @@ export default function GiftCard({ presente, onSelect, index }: GiftCardProps) {
             src={presente.imagem_url}
             alt={presente.titulo}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-[var(--champagne)] text-[var(--gold-light)]">
@@ -76,7 +76,7 @@ export default function GiftCard({ presente, onSelect, index }: GiftCardProps) {
           {presente.titulo}
         </h3>
         
-        <p className="text-sm text-[var(--text-secondary)] font-light mb-4 line-clamp-2 flex-grow">
+        <p className="text-sm text-[var(--text-secondary)] font-light mb-4 flex-grow">
           {presente.descricao}
         </p>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Trash2, Edit2, CheckCircle, XCircle, DollarSign, Package } from "lucide-react";
+import { Plus, Trash2, Edit2, CheckCircle, XCircle, DollarSign, Package, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { getGifts, saveGift, deleteGift, toggleGiftAvailability, getTransactions } from "@/app/actions/admin";
 
@@ -10,6 +10,7 @@ export default function AdminGiftsPage() {
   const [gifts, setGifts] = useState<any[]>([]);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
   
   // Modal e Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -82,6 +83,33 @@ export default function AdminGiftsPage() {
     }
   };
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/admin/upload-gift-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Erro no upload");
+
+      const data = await res.json();
+      setFormData(prev => ({ ...prev, imagem_url: data.url }));
+      toast.success("Imagem enviada com sucesso!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao enviar imagem");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -138,7 +166,12 @@ export default function AdminGiftsPage() {
                 <tbody className="divide-y divide-gray-100">
                 {gifts.map((gift) => (
                     <tr key={gift.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium">{gift.titulo}</td>
+                    <td className="px-6 py-4 font-medium flex items-center gap-3">
+                        {gift.imagem_url && (
+                            <img src={gift.imagem_url} alt="" className="w-10 h-10 rounded-md object-cover border border-gray-100" />
+                        )}
+                        {gift.titulo}
+                    </td>
                     <td className="px-6 py-4 text-gray-500">{gift.categoria}</td>
                     <td className="px-6 py-4 font-mono">
                         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(gift.preco)}
@@ -245,9 +278,48 @@ export default function AdminGiftsPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
                     <input type="text" value={formData.categoria} onChange={(e) => setFormData({...formData, categoria: e.target.value})} className="w-full px-4 py-2 border rounded-lg" placeholder="Ex: Lua de Mel, Casa Nova" />
                 </div>
-                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">URL da Imagem</label>
-                    <input type="text" value={formData.imagem_url} onChange={(e) => setFormData({...formData, imagem_url: e.target.value})} className="w-full px-4 py-2 border rounded-lg" placeholder="https://..." />
+                
+                {/* Image Upload Section */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Imagem</label>
+                    
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="relative flex-1">
+                            <input 
+                                type="file" 
+                                id="file-upload"
+                                className="hidden" 
+                                accept="image/png, image/jpeg, image/jpg, image/webp"
+                                onChange={handleFileUpload}
+                            />
+                            <label 
+                                htmlFor="file-upload"
+                                className={`w-full flex items-center justify-center gap-2 px-4 py-2 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors ${uploading ? 'opacity-50 cursor-wait' : ''}`}
+                            >
+                                <Upload size={16} />
+                                <span className="text-sm text-gray-600">
+                                    {uploading ? "Enviando..." : "Clique para enviar imagem (PNG/JPG)"}
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div className="relative">
+                        <span className="text-xs text-gray-400 absolute -top-2 left-2 bg-white px-1">Ou cole a URL</span>
+                        <input 
+                            type="text" 
+                            value={formData.imagem_url} 
+                            onChange={(e) => setFormData({...formData, imagem_url: e.target.value})} 
+                            className="w-full px-4 py-2 border rounded-lg text-sm text-gray-600" 
+                            placeholder="https://..." 
+                        />
+                    </div>
+                    
+                    {formData.imagem_url && (
+                        <div className="mt-2 relative w-full h-32 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                            <img src={formData.imagem_url} alt="Preview" className="w-full h-full object-cover" />
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex justify-end gap-3 mt-6">
