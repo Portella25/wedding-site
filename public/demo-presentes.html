@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Presentes - Demo</title>
+  <style>
+    :root { --champagne:#f7efe4; --gold:#d4af37; --gold-dark:#8b6f1d; --text-primary:#1f2937; --text-secondary:#6b7280; --white:#ffffff; }
+    body { margin:0; font-family: ui-sans-serif, system-ui; background: var(--champagne); color: var(--text-primary); }
+    .container { max-width: 1024px; margin: 0 auto; padding: 2rem 1rem; }
+    .nav { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .nav a { display:inline-block; text-transform:uppercase; font-size:.8rem; letter-spacing:.08em; color: var(--text-secondary); text-decoration:none; padding:.5rem .75rem; border-radius:8px; border:1px solid rgba(0,0,0,.06); background: #fff; }
+    .nav a:hover { color: var(--gold-dark); background: #fafafa; }
+    h1 { font-size: 2rem; color: var(--gold-dark); font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; margin: 0 0 1rem; text-align:center; }
+    .grid { display:grid; gap:1rem; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 920px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    .card { background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:16px; padding:1rem; box-shadow: 0 6px 16px rgba(0,0,0,.08); display:flex; flex-direction:column; gap:.5rem; }
+    .img { width:100%; height:180px; border-radius:12px; overflow:hidden; border: 3px solid #fff; box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+    .img img { width:100%; height:100%; object-fit:cover; display:block; }
+    .title { font-weight:600; font-size:1rem; }
+    .desc { color: var(--text-secondary); font-size:.95rem; }
+    .price { color: var(--gold-dark); font-weight:700; }
+    .btn { text-align:center; text-decoration:none; color:#fff; background: var(--gold); padding:.6rem .9rem; border-radius:10px; font-weight:600; }
+    .btn:hover { background:#c39b2e; }
+    .hint { text-align:center; margin-top: .75rem; font-size:.9rem; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="demo-home.html">Home</a>
+      <a href="demo-historia.html">História</a>
+      <a href="demo-rsvp.html">RSVP</a>
+      <a href="demo-presentes.html">Presentes</a>
+      <a href="demo-manual-convidados.html">Manual</a>
+      <a href="demo-memorias.html">Memórias</a>
+    </div>
+    <h1>Lista de Presentes</h1>
+    <div class="grid">
+      <div class="card">
+        <div class="img"><img src="https://images.unsplash.com/photo-1520975954732-35dd3b6e8cd2?q=80&w=2070&auto=format&fit=crop" alt="Jantar Romântico" /></div>
+        <div class="title">Jantar Romântico</div>
+        <div class="desc">Uma noite especial para celebrarmos o amor.</div>
+        <div class="price">R$ 250,00</div>
+        <a class="btn" href="#">Contribuir</a>
+        <div class="hint">Demo estática (sem pagamento real)</div>
+      </div>
+      <div class="card">
+        <div class="img"><img src="https://images.unsplash.com/photo-1518729547936-5a803f610606?q=80&w=2070&auto=format&fit=crop" alt="Cotas de Viagem" /></div>
+        <div class="title">Cotas de Viagem</div>
+        <div class="desc">Ajude a tornar nossa lua de mel inesquecível.</div>
+        <div class="price">R$ 100,00</div>
+        <a class="btn" href="#">Contribuir</a>
+        <div class="hint">Demo estática (sem pagamento real)</div>
+      </div>
+      <div class="card">
+        <div class="img"><img src="https://images.unsplash.com/photo-1484755560615-a4c64e97a887?q=80&w=2070&auto=format&fit=crop" alt="Eletrodoméstico" /></div>
+        <div class="title">Eletrodoméstico</div>
+        <div class="desc">Para completar nosso novo lar com praticidade.</div>
+        <div class="price">R$ 750,00</div>
+        <a class="btn" href="#">Contribuir</a>
+        <div class="hint">Demo estática (sem pagamento real)</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

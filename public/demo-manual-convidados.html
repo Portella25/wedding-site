@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manual dos Convidados - Demo</title>
+  <style>
+    :root { --champagne:#f7efe4; --gold:#d4af37; --gold-dark:#8b6f1d; --text-primary:#1f2937; --text-secondary:#6b7280; }
+    body { margin:0; font-family: ui-sans-serif, system-ui; background: var(--champagne); color: var(--text-primary); }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .nav { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .nav a { display:inline-block; text-transform:uppercase; font-size:.8rem; letter-spacing:.08em; color: var(--text-secondary); text-decoration:none; padding:.5rem .75rem; border-radius:8px; border:1px solid rgba(0,0,0,.06); background: #fff; }
+    .nav a:hover { color: var(--gold-dark); background: #fafafa; }
+    h1 { font-size: 2rem; color: var(--gold-dark); font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; margin: 0 0 1rem; text-align:center; }
+    .section { background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:16px; padding:1rem 1.25rem; box-shadow: 0 6px 16px rgba(0,0,0,.08); margin-bottom:1rem; }
+    .section h2 { margin:.25rem 0 .5rem; font-size:1.2rem; }
+    .section p, .section ul { color: var(--text-secondary); font-size:.95rem; }
+    .badge { display:inline-block; background: #fff1; color: var(--gold-dark); padding:.15rem .5rem; border:1px solid rgba(0,0,0,.06); border-radius:999px; font-size:.8rem; }
+    .grid { display:grid; grid-template-columns: 1fr; gap:1rem; }
+    @media (min-width: 820px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    .map { width:100%; border:0; border-radius:12px; height:300px; background:#eee; display:block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="demo-home.html">Home</a>
+      <a href="demo-historia.html">História</a>
+      <a href="demo-rsvp.html">RSVP</a>
+      <a href="demo-presentes.html">Presentes</a>
+      <a href="demo-manual-convidados.html">Manual</a>
+      <a href="demo-memorias.html">Memórias</a>
+    </div>
+    <h1>Manual dos Convidados</h1>
+
+    <div id="local" class="grid">
+      <div class="section">
+        <h2>Local</h2>
+        <p>Catedral Metropolitana — Praça da Sé, Centro, São Paulo</p>
+        <p>Chegue com antecedência de 20 minutos para acomodação tranquila.</p>
+      </div>
+      <div class="section">
+        <h2>Mapa</h2>
+        <div class="map"></div>
+        <p class="badge">Mapa ilustrativo</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="section">
+        <h2>Dress Code</h2>
+        <p>Traje social. Evite tons muito claros próximos ao branco.</p>
+      </div>
+      <div class="section">
+        <h2>Horários</h2>
+        <ul>
+          <li>15:30 — Recepção</li>
+          <li>16:00 — Cerimônia</li>
+          <li>18:00 — Festa</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Informações Gerais</h2>
+      <p>Estacionamento conveniado ao lado do salão. Crianças são muito bem-vindas. Em caso de dúvidas, fale conosco.</p>
+    </div>
+  </div>
+</body>
+</html>

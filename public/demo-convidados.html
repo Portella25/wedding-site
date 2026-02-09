@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo Convidados - Nossa História</title>
+  <style>
+    :root {
+      --champagne: #f7efe4;
+      --gold: #d4af37;
+      --gold-dark: #8b6f1d;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --white: #ffffff;
+    }
+    body { margin:0; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; background: var(--champagne); color: var(--text-primary); }
+    .container { max-width: 1024px; margin: 0 auto; padding: 2rem 1rem; }
+    a { color: var(--text-secondary); text-decoration: none; }
+    a:hover { color: var(--gold-dark); }
+    .header { text-align: center; margin-bottom: 3rem; }
+    .heart { color: var(--gold); font-size: 2rem; }
+    h1 { font-size: 2.5rem; color: var(--gold-dark); margin: 0.5rem 0 1rem; }
+    p.lead { color: var(--text-secondary); max-width: 640px; margin: 0 auto; }
+    .timeline { position: relative; }
+    .line { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(212,175,55,0.3); transform: translateX(-50%); }
+    .items { display: grid; gap: 3rem; padding-bottom: 4rem; }
+    .item { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: center; position: relative; }
+    @media (min-width: 768px) {
+      .item { grid-template-columns: 1fr 1fr; }
+      .item.reverse { direction: rtl; }
+      .item.reverse .text { direction: ltr; }
+    }
+    .pin { position: absolute; left: 50%; width: 14px; height: 14px; background: var(--gold); border-radius: 50%; border: 4px solid var(--white); box-shadow: 0 2px 8px rgba(0,0,0,0.15); transform: translateX(-50%); }
+    .image { width: 100%; height: 320px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border: 4px solid var(--white); }
+    .image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .text { padding: 0 0.5rem; text-align: left; }
+    .year { color: var(--gold-dark); font-weight: bold; font-size: 1.25rem; margin-bottom: .25rem; }
+    .title { font-size: 1.5rem; color: var(--text-primary); margin: .25rem 0 .5rem; }
+    .desc { color: var(--text-secondary); line-height: 1.6; font-size: 1rem; }
+    .back { display: inline-flex; align-items: center; gap: .5rem; text-transform: uppercase; font-size: .8rem; letter-spacing: .08em; margin-bottom: 1rem; }
+    .footer-dot { position: absolute; left: 50%; bottom: 0; width: 12px; height: 12px; border-radius: 50%; background: rgba(212,175,55,0.3); transform: translateX(-50%); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="#" onclick="history.back();return false;">← Voltar</a>
+    <div class="header">
+      <div class="heart">❤</div>
+      <h1>Nossa História</h1>
+      <p class="lead">Cada capítulo nos trouxe até aqui. Relembre conosco os momentos que marcaram nossa jornada.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="line"></div>
+      <div class="items">
+        <div class="item reverse">
+          <div class="image">
+            <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?q=80&w=2071&auto=format&fit=crop" alt="O Primeiro Encontro" />
+          </div>
+          <div class="pin" style="top: 24px;"></div>
+          <div class="text">
+            <div class="year">2018</div>
+            <div class="title">O Primeiro Encontro</div>
+            <div class="desc">Nos conhecemos em um café no centro da cidade. Uma conversa despretensiosa que durou horas e mudou nossas vidas para sempre.</div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="image">
+            <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1974&auto=format&fit=crop" alt="O Primeiro Sim" />
+          </div>
+          <div class="pin" style="top: 24px;"></div>
+          <div class="text">
+            <div class="year">2019</div>
+            <div class="title">O Primeiro Sim</div>
+            <div class="desc">Oficializamos nosso namoro em uma viagem inesquecível para Campos do Jordão.</div>
+          </div>
+        </div>
+
+        <div class="item reverse">
+          <div class="image">
+            <img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=2070&auto=format&fit=crop" alt="Nossa Primeira Casa" />
+          </div>
+          <div class="pin" style="top: 24px;"></div>
+          <div class="text">
+            <div class="year">2021</div>
+            <div class="title">Nossa Primeira Casa</div>
+            <div class="desc">Juntamos as escovas de dente e começamos a construir nosso lar, cheio de plantas e sonhos.</div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="image">
+            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070&auto=format&fit=crop" alt="O Pedido" />
+          </div>
+          <div class="pin" style="top: 24px;"></div>
+          <div class="text">
+            <div class="year">2024</div>
+            <div class="title">O Pedido</div>
+            <div class="desc">Sob a luz do luar, veio a pergunta mais importante e a resposta mais certa de todas.</div>
+          </div>
+        </div>
+
+        <div class="item reverse">
+          <div class="image">
+            <img src="https://images.unsplash.com/photo-1519225421980-715cb0202128?q=80&w=2070&auto=format&fit=crop" alt="O Grande Dia" />
+          </div>
+          <div class="pin" style="top: 24px;"></div>
+          <div class="text">
+            <div class="year">2026</div>
+            <div class="title">O Grande Dia</div>
+            <div class="desc">Agora, estamos prontos para celebrar nosso amor com as pessoas mais especiais de nossas vidas: vocês!</div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-dot"></div>
+    </div>
+  </div>
+</body>
+</html>

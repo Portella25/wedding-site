@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Memórias - Demo</title>
+  <style>
+    :root { --champagne:#f7efe4; --gold:#d4af37; --gold-dark:#8b6f1d; --text-primary:#1f2937; --text-secondary:#6b7280; --white:#ffffff; }
+    body { margin:0; font-family: ui-sans-serif, system-ui; background: var(--champagne); color: var(--text-primary); }
+    .container { max-width: 1024px; margin: 0 auto; padding: 2rem 1rem; }
+    .nav { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .nav a { display:inline-block; text-transform:uppercase; font-size:.8rem; letter-spacing:.08em; color: var(--text-secondary); text-decoration:none; padding:.5rem .75rem; border-radius:8px; border:1px solid rgba(0,0,0,.06); background: #fff; }
+    .nav a:hover { color: var(--gold-dark); background: #fafafa; }
+    h1 { font-size: 2rem; color: var(--gold-dark); font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; margin: 0 0 1rem; text-align:center; }
+    .grid { display:grid; gap:1rem; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    .photo { position:relative; border-radius:12px; overflow:hidden; border: 3px solid #fff; box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+    .photo img { width:100%; height:220px; object-fit:cover; display:block; }
+    .caption { position:absolute; left:0; right:0; bottom:0; background: linear-gradient(transparent, rgba(0,0,0,.55)); color:#fff; padding:.5rem .75rem; font-size:.9rem; }
+    .actions { text-align:center; margin-top:1rem; }
+    .btn { display:inline-block; text-decoration:none; color:#fff; background: var(--gold); padding:.6rem .9rem; border-radius:10px; font-weight:600; }
+    .btn:hover { background:#c39b2e; }
+    .hint { text-align:center; margin-top: .5rem; font-size:.9rem; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="demo-home.html">Home</a>
+      <a href="demo-historia.html">História</a>
+      <a href="demo-rsvp.html">RSVP</a>
+      <a href="demo-presentes.html">Presentes</a>
+      <a href="demo-manual-convidados.html">Manual</a>
+      <a href="demo-memorias.html">Memórias</a>
+    </div>
+    <h1>Memórias</h1>
+    <div class="grid">
+      <div class="photo">
+        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop" alt="Amigos reunidos" />
+        <div class="caption">Amigos reunidos</div>
+      </div>
+      <div class="photo">
+        <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?q=80&w=2070&auto=format&fit=crop" alt="Brinde especial" />
+        <div class="caption">Brinde especial</div>
+      </div>
+      <div class="photo">
+        <img src="https://images.unsplash.com/photo-1505275350441-83dc5cf85d2e?q=80&w=2070&auto=format&fit=crop" alt="Danças e sorrisos" />
+        <div class="caption">Danças e sorrisos</div>
+      </div>
+      <div class="photo">
+        <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=2070&auto=format&fit=crop" alt="Mesa decorada" />
+        <div class="caption">Mesa decorada</div>
+      </div>
+      <div class="photo">
+        <img src="https://images.unsplash.com/photo-1519222970733-f546218fa6d3?q=80&w=2070&auto=format&fit=crop" alt="Momento único" />
+        <div class="caption">Momento único</div>
+      </div>
+      <div class="photo">
+        <img src="https://images.unsplash.com/photo-1526045478516-99145907023c?q=80&w=2070&auto=format&fit=crop" alt="Doce final" />
+        <div class="caption">Doce final</div>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="#">Enviar foto</a>
+      <div class="hint">Demo estática (sem envio real)</div>
+    </div>
+  </div>
+</body>
+</html>

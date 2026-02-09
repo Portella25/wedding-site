@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RSVP - Demo</title>
+  <style>
+    :root { --champagne:#f7efe4; --gold:#d4af37; --gold-dark:#8b6f1d; --text-primary:#1f2937; --text-secondary:#6b7280; }
+    body { margin:0; font-family: ui-sans-serif, system-ui; background: var(--champagne); color: var(--text-primary); }
+    .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+    .nav { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .nav a { display:inline-block; text-transform:uppercase; font-size:.8rem; letter-spacing:.08em; color: var(--text-secondary); text-decoration:none; padding:.5rem .75rem; border-radius:8px; border:1px solid rgba(0,0,0,.06); background: #fff; }
+    .nav a:hover { color: var(--gold-dark); background: #fafafa; }
+    h1 { font-size: 2rem; color: var(--gold-dark); font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; margin: 0 0 1rem; text-align:center; }
+    .card { background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:16px; padding:1rem; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+    .row { display:grid; grid-template-columns: 1fr; gap:1rem; }
+    @media (min-width: 640px) { .row { grid-template-columns: 1fr 1fr; } }
+    label { font-size:.9rem; color: var(--text-secondary); display:block; margin-bottom:.25rem; }
+    input, select, textarea { width:100%; padding:.6rem .75rem; border-radius:10px; border:1px solid rgba(0,0,0,.12); outline:none; }
+    .actions { display:flex; gap:.75rem; margin-top:1rem; }
+    .btn { flex:1; text-align:center; text-decoration:none; color:#fff; background: var(--gold); padding:.75rem; border-radius:10px; font-weight:600; }
+    .btn.secondary { background:#374151; }
+    .btn:hover { filter: brightness(0.95); }
+    .hint { text-align:center; margin-top: .75rem; font-size:.9rem; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="demo-home.html">Home</a>
+      <a href="demo-historia.html">História</a>
+      <a href="demo-rsvp.html">RSVP</a>
+      <a href="demo-presentes.html">Presentes</a>
+      <a href="demo-manual-convidados.html">Manual</a>
+      <a href="demo-memorias.html">Memórias</a>
+    </div>
+    <h1>Confirmação de Presença (RSVP)</h1>
+    <div class="card">
+      <div class="row">
+        <div>
+          <label>Seu nome</label>
+          <input type="text" placeholder="Ex.: Maria Silva" />
+        </div>
+        <div>
+          <label>Status</label>
+          <select>
+            <option>Confirmado</option>
+            <option>Pendente</option>
+            <option>Recusado</option>
+          </select>
+        </div>
+        <div>
+          <label>Acompanhantes</label>
+          <input type="number" min="0" max="5" value="0" />
+        </div>
+        <div>
+          <label>Telefone</label>
+          <input type="tel" placeholder="(11) 91234-5678" />
+        </div>
+        <div style="grid-column:1/-1">
+          <label>Mensagem</label>
+          <textarea rows="3" placeholder="Deixe um recado para os noivos"></textarea>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn secondary" href="demo-home.html">Voltar</a>
+        <a class="btn" href="#">Enviar</a>
+      </div>
+      <div class="hint">Demo estática (sem envio real)</div>
+    </div>
+  </div>
+</body>
+</html>

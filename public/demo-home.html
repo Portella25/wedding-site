@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home Convidados - Demo</title>
+  <style>
+    :root {
+      --champagne: #f7efe4;
+      --gold: #d4af37;
+      --gold-dark: #8b6f1d;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --white: #ffffff;
+    }
+    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial; background: var(--champagne); color: var(--text-primary); }
+    .container { max-width: 1024px; margin: 0 auto; padding: 2rem 1rem; }
+    .nav { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .nav a { display:inline-flex; align-items:center; gap:.5rem; text-transform:uppercase; font-size:.8rem; letter-spacing:.08em; color: var(--text-secondary); text-decoration:none; padding:.5rem .75rem; border-radius:8px; border:1px solid rgba(0,0,0,.06); background: #fff; }
+    .nav a:hover { color: var(--gold-dark); background: #fafafa; }
+    .hero { text-align:center; padding: 2rem 0; }
+    .hero h1 { font-size: 2.25rem; color: var(--gold-dark); margin: 0.25rem 0 0.5rem; font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; }
+    .hero p { color: var(--text-secondary); max-width: 720px; margin: 0 auto; }
+    .grid { display:grid; gap:1rem; grid-template-columns: 1fr; margin-top: 2rem; }
+    @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 920px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    .card { background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:16px; padding:1rem; box-shadow: 0 6px 16px rgba(0,0,0,.08); display:flex; flex-direction:column; gap:.5rem; }
+    .card h3 { margin:0; font-size:1.1rem; color: var(--text-primary); }
+    .card p { margin:0; color: var(--text-secondary); font-size:.95rem; }
+    .card a { margin-top:auto; display:inline-block; text-decoration:none; color:#fff; background: var(--gold); padding:.6rem .9rem; border-radius:10px; font-weight:600; text-align:center; }
+    .card a:hover { background: #c39b2e; }
+    .footer { text-align:center; margin-top: 2rem; font-size:.85rem; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="demo-home.html">Home</a>
+      <a href="demo-historia.html">História</a>
+      <a href="demo-rsvp.html">RSVP</a>
+      <a href="demo-presentes.html">Presentes</a>
+      <a href="demo-manual-convidados.html">Manual</a>
+      <a href="demo-memorias.html">Memórias</a>
+    </div>
+    <div class="hero">
+      <h1>Bem-vindo(a), Convidado!</h1>
+      <p>Estamos muito felizes em celebrar este momento com você. Explore as seções abaixo para saber mais, confirmar presença, contribuir com presentes e compartilhar memórias.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Nossa História</h3>
+        <p>Reviva os momentos que marcaram a nossa jornada até aqui.</p>
+        <a href="demo-historia.html">Abrir</a>
+      </div>
+      <div class="card">
+        <h3>RSVP</h3>
+        <p>Confirme sua presença e informe acompanhantes.</p>
+        <a href="demo-rsvp.html">Abrir</a>
+      </div>
+      <div class="card">
+        <h3>Presentes</h3>
+        <p>Veja ideias de presentes e contribua com nossa lista.</p>
+        <a href="demo-presentes.html">Abrir</a>
+      </div>
+      <div class="card">
+        <h3>Manual dos Convidados</h3>
+        <p>Informações úteis sobre horários, dress code e local.</p>
+        <a href="demo-manual-convidados.html">Abrir</a>
+      </div>
+      <div class="card">
+        <h3>Memórias</h3>
+        <p>Confira fotos compartilhadas e deixe sua lembrança.</p>
+        <a href="demo-memorias.html">Abrir</a>
+      </div>
+      <div class="card">
+        <h3>Local e Agenda</h3>
+        <p>Endereço, mapa e programação do grande dia.</p>
+        <a href="demo-manual-convidados.html#local">Abrir</a>
+      </div>
+    </div>
+    <div class="footer">Feito com carinho • Demo estática para visualização</div>
+  </div>
+</body>
+</html>
