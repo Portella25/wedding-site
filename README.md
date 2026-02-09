@@ -1,4 +1,4 @@
-# Letícia & Adriano - Site de Casamento Premium 💍
+# Letícia & Adriano - Site de Casamento
 
 Este é o projeto do site de casamento, desenvolvido com **Next.js 14**, **Tailwind CSS**, **Supabase** e **Docker**.
 
